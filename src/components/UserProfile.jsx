@@ -6,12 +6,12 @@ import UserContext from './context/UserContext';
 const UserProfile = () => {
     const { user, repos, userProfile, userReop } = useContext(UserContext)
 
-    console.log(repos);
+
     const { userName } = useParams();
     useEffect(() => {
         userProfile(userName)
         userReop(userName)
-    }, [])
+    }, [userName, userProfile, userReop])
     
   return (
     <div className="md:flex flex-initial">

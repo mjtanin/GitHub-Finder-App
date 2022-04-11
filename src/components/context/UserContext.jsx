@@ -10,6 +10,7 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     fecthUsers()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const fecthUsers = async () => {
