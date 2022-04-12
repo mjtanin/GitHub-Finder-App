@@ -1,17 +1,26 @@
 import { useContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { userProfile, userReop } from './context/UserAction';
 import UserContext from './context/UserContext';
 
 
 const UserProfile = () => {
-    const { user, repos, userProfile, userReop } = useContext(UserContext)
-
+    const { user, repos, dispatch } = useContext(UserContext)
 
     const { userName } = useParams();
+
     useEffect(() => {
-        userProfile(userName)
-        userReop(userName)
-    }, [userName, userProfile, userReop])
+        async function fecthData(){
+            const userData = await Promise.all([userProfile(userName), userReop(userName)])
+            dispatch({
+                type: 'GET_USER_AND_REPOS',
+                user: userData[0],
+                repos: userData[1],
+            })
+        }
+        fecthData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
     
   return (
     <div className="md:flex flex-initial">
