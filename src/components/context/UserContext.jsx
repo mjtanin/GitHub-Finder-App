@@ -13,6 +13,7 @@ export const UserProvider = ({ children }) => {
 
 
   const [state, dispatch] = useReducer(userReduser, initialState)
+  
   return (
     <UserContext.Provider value={{
       ...state,

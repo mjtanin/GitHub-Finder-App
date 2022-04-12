@@ -12,6 +12,11 @@ const userReduser = (state, acction) => {
                 user: acction.user,
                 repos: acction.repos
             }
+        case 'DELETE_USERS':
+            return {
+                ...state,
+                users: acction.users
+            }
         default:
             return state
     }

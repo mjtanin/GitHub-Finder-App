@@ -1,10 +1,17 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SearchUser, User } from ".";
 import { searchUsers } from "./context/UserAction";
 import UserContext from "./context/UserContext";
 
-const Users = ({}) => {
+const Users = () => {
+  const [isUsers, setIsUsers] = useState(false)
   const { users, dispatch } = useContext(UserContext)
+
+  useEffect(()=>{
+    if(users.length !== 0){
+      setIsUsers(true)
+    }
+  }, [users])
   
   const handleSubmit = async (event, user) => {
     event.preventDefault();
@@ -14,19 +21,28 @@ const Users = ({}) => {
 
     }else {
       const data = await searchUsers(user);
-      dispatch({
-        type: 'SEARCH_USERS',
-        users: data.items
-      })
+      if(data.items.length !== 0){
+        dispatch({
+          type: 'SEARCH_USERS',
+          users: data.items
+        })
+      } 
     }
   }
 
+  const deleteUsers = () => {
+    setIsUsers(false)
+    dispatch({
+      type: 'DELETE_USERS',
+      users: []
+    })
+  }
 
   return (
     <>
-    <SearchUser handleSubmit={handleSubmit} />
+    <SearchUser isUsers={isUsers} handleSubmit={handleSubmit} deleteUsers={deleteUsers} />
     <div className="Users flex flex-wrap flex-initial">
-      {users.map(user => <User key={user.id} user={user} />)}
+      {isUsers && users.map(user => <User key={user.id} user={user} />)}
     </div>
     </>
   )
